@@ -62,12 +62,12 @@ const updateUI = async() => {
   const request = await fetch('/all');
   try {
       const allData = await request.json();
-      const last = allData[allData.length-1];
+      let lasty = allData[allData.length-1];
       console.log(allData);
       // update new entry values
-          document.getElementById('date').innerHTML = `date: ${last.date}`;
-          document.getElementById('temp').innerHTML = `Temperature: ${last.temp}`;
-          document.getElementById('content').innerHTML = `feeling: ${last.feelings}`;
+          document.getElementById('date').innerHTML = `date: ${lasty.date}`;
+          document.getElementById('temp').innerHTML = `Temperature: ${lasty.temp}`;
+          document.getElementById('content').innerHTML = `feeling: ${lasty.feelings}`;
   } catch (error) {
       console.log('error', error);
   }
