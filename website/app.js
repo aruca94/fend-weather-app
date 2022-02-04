@@ -1,30 +1,31 @@
 /* Global Variables */
-const zipCode =  document.getElementById('zip').value;
+const zip=  document.getElementById('zip').value;
 // url and api key
-const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
-const apiKey = '&APPID=7ba3097fa4618bff87a065e43d2562b1&units=imperial';
+const url = 'http://api.openweathermap.org/data/2.5/weather?zip=';
+const key = '&APPID=7ba3097fa4618bff87a065e43d2562b1&units=imperial';
 // Create a new date instance dynamically with JS
 const d = new Date();
 const newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
-// feeling, zipcode, and date variables below
-const performAction = (e) => {
+// feeling, zip, and date variables below
+const getValues = (e) => {
   const feelings = document.getElementById('feelings').value;
-  const zipCode =  document.getElementById('zip').value;
+  const zip =  document.getElementById('zip').value;
   const newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
 // post data to the object
-  getData(baseURL , zipCode , apiKey )
+// lesson 4.9 & lesson 4.10
+  dataToObject(url , zip , key )
   .then (function(data) {
-      postData('/addData' ,{temp:data.main.temp ,date:newDate, feelings: feelings} )
+      post('/post' ,{temp:data.main.temp ,date:newDate, feelings: feelings} )
   })
   .then(() =>
       updateUI()
   )};
 // event listener
-document.getElementById('generate').addEventListener('click', performAction);
+document.getElementById('generate').addEventListener('click', getValues);
 // GET data from API function
-// from https://classroom.udacity.com/nanodegrees/nd0011/parts/cd0429/
-const getData = async (baseURL, zipCode, apiKey)=>{
-  const res = await fetch(baseURL + zipCode + apiKey)
+// lesson 4.2
+const dataToObject = async (url, zip, key)=>{
+  const res = await fetch(url + zip + key)
   try {
     const data = await res.json();
     console.log(data)
@@ -35,8 +36,9 @@ const getData = async (baseURL, zipCode, apiKey)=>{
   }
 }
 // post data
-const postData = async ( url = '', data = {}) => {
-    const response = await fetch(url, {
+// lesson 3.6 & lesson 4.2
+const post = async ( url = '', data = {}) => {
+    const res = await fetch(url, {
         method: 'POST',
         credentials: 'same-origin',
         headers: {
@@ -50,24 +52,25 @@ const postData = async ( url = '', data = {}) => {
     });
 
 try {
-    const newData = await response.json();
-    console.log(newData);
-    return newData
+    const dataResponse = await res.json();
+    console.log(dataResponse);
+    return dataResponse
 }catch(error){
     console.log("error", error);
 }
 }
 // update user inputs and place in bottom box
+// lesson 4.10
 const updateUI = async() => {
-  const request = await fetch('/all');
+  const req = await fetch('/get');
   try {
-      const allData = await request.json();
-      let lasty = allData[allData.length-1];
-      console.log(allData);
+      const compData = await req.json();
+      const last = compData[compData.length-1];
+      // console.log(compData);
       // update new entry values
-          document.getElementById('date').innerHTML = `date: ${lasty.date}`;
-          document.getElementById('temp').innerHTML = `Temperature: ${lasty.temp}`;
-          document.getElementById('content').innerHTML = `feeling: ${lasty.feelings}`;
+          document.getElementById('date').innerHTML = `date: ${last.date}`;
+          document.getElementById('temp').innerHTML = `Temperature: ${last.temp}`;
+          document.getElementById('content').innerHTML = `feeling: ${last.feelings}`;
   } catch (error) {
       console.log('error', error);
   }
