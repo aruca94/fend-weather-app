@@ -5,7 +5,7 @@ const express = require('express');
 // var name from lesson 2.1
 const app = express();
 // empty js object to be used
-  const projectData = [];
+  const projectData = {};
 /* Dependencies */
 // from lesson 2.1
 const bodyParser = require('body-parser')
@@ -41,11 +41,8 @@ app.get('/get', function (req, res) {
 app.post('/post', postData)
 
 function postData(req,res){
-
-    entryFormat = {
-    temp: req.body.temp,
-    date: req.body.date,
-    feelings: req.body.feelings
-    }
-    projectData.push(entryFormat);
+    projectData.temp = req.body.temp;
+    projectData.date = req.body.date,
+    projectData.feelings = req.body.feelings
+    res.send(projectData);
   };
