@@ -33,3 +33,11 @@ $ npm install express
 $ npm install body-parser
 $ npm install cors
 ```
+
+## start server
+ Simply start the server by:
+  ```
+  $ node server.js
+  ```
+  Open the local server that the terminal says it's started on and the
+  app will then start working.
